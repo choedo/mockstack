@@ -98,7 +98,7 @@ function numberValidateCheck(options: NumberOptions): ReturnType {
   const { type, min, max, precision } = options;
 
   if (min && max) {
-    if (min >= max) {
+    if (Number(min) >= Number(max)) {
       return {
         status: 'Fail',
         message: AlertMessages.MINIMUM_GREATER_MAXIMUM,
