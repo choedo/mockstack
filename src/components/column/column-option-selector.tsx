@@ -45,6 +45,12 @@ type Props = {
 
 export default function ColumnOptionSelector(props: Props) {
   const language = useLanguage();
+  /**
+   * Default 옵션
+   * --
+   * @param {ColumnTypes} type
+   * @returns {ColumnOptions}
+   */
   const getDefaultOptions = (type: ColumnTypes): ColumnOptions => {
     switch (type) {
       case 'pk':
@@ -96,12 +102,6 @@ export default function ColumnOptionSelector(props: Props) {
       const newOptions = getDefaultOptions(props.type);
       setSelected(newOptions);
     }
-
-    return () => {
-      setSelected(() => getDefaultOptions(props.type));
-      setIsRender(false);
-      setInputValue('');
-    };
   }, [props.type, isRender, selected.type]);
 
   React.useEffect(() => {

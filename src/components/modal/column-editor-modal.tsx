@@ -177,6 +177,10 @@ export default function ColumnEditorModal() {
     return () => {
       setTitle('');
       setType('');
+      setOptions({
+        type: 'pk',
+        valueType: 'uuid',
+      });
     };
   }, [columnEditModal]);
 
