@@ -2,16 +2,34 @@ import {
   mockGenerateValue,
   type MockGenerateValueResult,
 } from '@/lib/mock-generator';
-import type { ColumnEntity } from '@/types/data';
+import type { ColumnEntity, DBDialect } from '@/types/data';
+
+const getIdentifier = (name: string, dbType: DBDialect) => {
+  switch (dbType) {
+    case 'MYSQL':
+      return `\`${name}\``; // MySQL은 백틱
+    case 'MSSQL':
+      return `[${name}]`; // MS SQL은 대괄호
+    case 'POSTGRESQL':
+    default:
+      return `"${name}"`; // PostgreSQL 등 ANSI 표준은 겹따옴표
+  }
+};
 
 type SchemaGenerator = (
   tableName: string,
   columns: ColumnEntity[],
   amount: number,
+  dbType?: DBDialect,
 ) => string;
-const schemaSQLGenerator: SchemaGenerator = (tableName, columns, amount) => {
+const schemaSQLGenerator: SchemaGenerator = (
+  tableName,
+  columns,
+  amount,
+  dbType = 'MYSQL',
+) => {
   const colNames = columns
-    .map((column) => `\`${column.column_name}\``)
+    .map((column) => getIdentifier(column.column_name, dbType))
     .join(', ');
   const rows: string[] = [];
 
@@ -26,7 +44,9 @@ const schemaSQLGenerator: SchemaGenerator = (tableName, columns, amount) => {
     rows.push(`(${values.join(', ')})`);
   }
 
-  return `INSERT INTO \`${tableName}\` (${colNames})\nVALUES\n ${rows.join(',\n  ')};`;
+  const safeTableName = getIdentifier(tableName, dbType);
+
+  return `INSERT INTO ${safeTableName} (${colNames})\nVALUES\n ${rows.join(',\n  ')};`;
 };
 
 const schemaJSONGenerator: SchemaGenerator = (tableName, columns, amount) => {

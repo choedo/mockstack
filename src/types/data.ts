@@ -1,4 +1,4 @@
-import type { MOCK_DATA_ITEMS } from '@/data/mock';
+import type { MOCK_DATA_ITEMS, MOCK_DB_DIALECT } from '@/data/mock';
 import type { Database } from '@/database.types';
 import type {
   NumberOptions,
@@ -21,6 +21,7 @@ export type ColumnEntity = Database['public']['Tables']['column']['Row'] & {
 };
 
 export type MockDataType = (typeof MOCK_DATA_ITEMS)[number];
+export type DBDialect = (typeof MOCK_DB_DIALECT)[number];
 
 export type TableAndColumn = TableEntity & {
   columns: ColumnEntity[];

@@ -12,13 +12,14 @@ import { Input } from '@/components/ui/input';
 import { inputIntegerValue } from '@/lib/input-value';
 import { Spinner } from '@/components/ui/spinner';
 import toastMessage from '@/lib/toast-message';
-import type { ColumnEntity } from '@/types/data';
+import type { ColumnEntity, DBDialect } from '@/types/data';
 import { SchemaGenerator } from '@/lib/generator';
 
 import { useOpenMockResultModal } from '@/store/mock-result-modal';
 import { useLanguage } from '@/store/translation';
 import { AlertMessages } from '@/languages/alert-messages';
 import { ContentMessages } from '@/languages/content-messages';
+import { MOCK_DB_DIALECT } from '@/data/mock';
 
 type Props = {
   columns: ColumnEntity[];
@@ -61,10 +62,18 @@ export default function ConfirmProduceMockDataModal(props: Props) {
         props.columns,
         Number(amount),
       ),
-      SQL: SchemaGenerator.toSQL(
-        props.tableName,
-        props.columns,
-        Number(amount),
+      ...MOCK_DB_DIALECT.reduce(
+        (acc, cur) => {
+          acc[cur] = SchemaGenerator.toSQL(
+            props.tableName,
+            props.columns,
+            Number(amount),
+            cur,
+          );
+
+          return acc;
+        },
+        {} as Record<DBDialect, string>,
       ),
     };
 
