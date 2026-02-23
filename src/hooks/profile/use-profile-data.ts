@@ -6,7 +6,6 @@ import { fetchProfile, createProfile } from '@/api/profile';
 
 export function useProfileData(userId?: string) {
   const session = useSession();
-  console.log(session);
   const isMine = userId === session?.user.id;
 
   return useQuery({
