@@ -11,22 +11,22 @@ type SchemaGenerator = (
 ) => string;
 const schemaSQLGenerator: SchemaGenerator = (tableName, columns, amount) => {
   const colNames = columns
-    .map((column) => `"${column.column_name}"`)
+    .map((column) => `\`${column.column_name}\``)
     .join(', ');
   const rows: string[] = [];
 
   for (let i = 0; i < amount; i++) {
-    const values = columns.map((column, index) => {
-      const val = mockGenerateValue(column, index);
+    const values = columns.map((column) => {
+      const val = mockGenerateValue(column, i);
 
       if (typeof val === 'number') return val;
       else if (typeof val === 'boolean') return val;
-      else return `'${String(val)}`;
+      else return `'${String(val)}'`;
     });
     rows.push(`(${values.join(', ')})`);
   }
 
-  return `INSERT INTO "${tableName}" (${colNames})\nVALUES\n ${rows.join(',\n  ')};`;
+  return `INSERT INTO \`${tableName}\` (${colNames})\nVALUES\n ${rows.join(',\n  ')};`;
 };
 
 const schemaJSONGenerator: SchemaGenerator = (tableName, columns, amount) => {
@@ -35,8 +35,7 @@ const schemaJSONGenerator: SchemaGenerator = (tableName, columns, amount) => {
   for (let i = 0; i < amount; i++) {
     const row: Record<string, MockGenerateValueResult> = {};
     columns.forEach(
-      (column, index) =>
-        (row[column.column_name] = mockGenerateValue(column, index)),
+      (column) => (row[column.column_name] = mockGenerateValue(column, i)),
     );
     data.push(row);
   }
