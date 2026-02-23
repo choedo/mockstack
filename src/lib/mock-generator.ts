@@ -23,7 +23,7 @@ export const mockGenerateValue: MockGenerateValue = (col, index) => {
       if (options.valueType === 'uuid') {
         return RandomUtils.getUUID() as string;
       }
-      return options.min + index;
+      return Number(options.min) + index;
     }
     case 'date': {
       return RandomUtils.getDate(options);
