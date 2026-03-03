@@ -1,4 +1,4 @@
-import React, { type KeyboardEvent } from 'react';
+import React from 'react';
 import {
   Card,
   CardAction,
@@ -21,6 +21,7 @@ import toastMessage from '@/lib/toast-message';
 import { AlertMessages } from '@/languages/alert-messages';
 import { useLanguage } from '@/store/translation';
 import { ContentMessages } from '@/languages/content-messages';
+import { pressEnter } from '@/lib/input-value';
 
 export default function SignInPage() {
   const navigate = useNavigate();
@@ -96,12 +97,6 @@ export default function SignInPage() {
     signInWithPassword({ email, password });
   };
 
-  const handlePressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter') {
-      handleLoginClick();
-    }
-  };
-
   const handleSignUpClick = () => {
     signUpModalOpen();
   };
@@ -146,7 +141,7 @@ export default function SignInPage() {
             placeholder={ContentMessages.EMAIL_PLACEHOLDER[languages]}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            onKeyDown={handlePressEnter}
+            onKeyDown={(e) => pressEnter(e, handleLoginClick)}
             disabled={isPending}
           />
         </div>
@@ -163,7 +158,7 @@ export default function SignInPage() {
             placeholder={ContentMessages.PASSWORD_PLACEHOLDER[languages]}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={handlePressEnter}
+            onKeyDown={(e) => pressEnter(e, handleLoginClick)}
             disabled={isPending}
           />
         </div>
