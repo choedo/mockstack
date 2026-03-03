@@ -41,7 +41,7 @@ export default function MockResultModal() {
             value={dataType}
             onValueChange={(value: MockDataType) => setDataType(value)}
           >
-            <SelectTrigger className={'w-30'}>
+            <SelectTrigger className={'w-50'}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
