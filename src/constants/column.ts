@@ -28,6 +28,10 @@ export const DEFAULT_COLUMN_TYPES: DefaultKeyValues = {
     title: 'Number',
     value: 'number',
   },
+  string: {
+    title: 'String',
+    value: 'string',
+  },
   boolean: {
     title: 'Boolean',
     value: 'boolean',

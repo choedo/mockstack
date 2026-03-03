@@ -57,4 +57,13 @@ describe('RandomUtils', () => {
     expect(dayjs.unix(dateUnix as number).isAfter(minDate)).toBe(true);
     expect(dayjs.unix(dateUnix as number).isBefore(maxDate)).toBe(true);
   });
+
+  it('getRandomString: 지정된 길이의 문자열을 반환해야 한다', () => {
+    const min = 5;
+    const max = 10;
+    const result = RandomUtils.getRandomString(min, max);
+
+    expect(result.length).toBeGreaterThanOrEqual(min);
+    expect(result.length).toBeLessThanOrEqual(max);
+  });
 });

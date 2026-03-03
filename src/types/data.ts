@@ -12,6 +12,7 @@ import type {
   ContactOptions,
   AccountOptions,
   HobbyOptions,
+  StringOptions,
 } from '@/types/columns';
 
 export type ProfileEntity = Database['public']['Tables']['profile']['Row'];
@@ -28,7 +29,13 @@ export type DBDialect = (typeof MOCK_DB_DIALECT)[number];
 export type TableAndColumn = TableEntity & {
   columns: ColumnEntity[];
 };
-export type ColumnDefaultTypes = 'pk' | 'date' | 'enum' | 'number' | 'boolean';
+export type ColumnDefaultTypes =
+  | 'pk'
+  | 'date'
+  | 'enum'
+  | 'number'
+  | 'string'
+  | 'boolean';
 export type ColumnCustomTypes =
   | 'name'
   | 'email'
@@ -40,6 +47,7 @@ export type ColumnTypes = ColumnDefaultTypes | ColumnCustomTypes;
 
 export type ColumnDefaultOptions =
   | NumberOptions
+  | StringOptions
   | DateOptions
   | EnumOptions
   | PrimaryOptions

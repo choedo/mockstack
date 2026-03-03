@@ -6,6 +6,7 @@ import type {
   EnumOptions,
   NumberOptions,
   PrimaryOptions,
+  StringOptions,
 } from '@/types/columns';
 import type { ColumnOptions } from '@/types/data';
 import type { Language } from '@/types/default';
@@ -30,6 +31,8 @@ export function columnValidateCheck(options: ColumnOptions): ReturnType {
       return dateValidateCheck(options);
     case 'number':
       return numberValidateCheck(options);
+    case 'string':
+      return stringValidateCheck(options);
     case 'enum':
       return enumValidateCheck(options);
     case 'boolean':
@@ -38,6 +41,8 @@ export function columnValidateCheck(options: ColumnOptions): ReturnType {
     case 'email':
     case 'address':
     case 'contact':
+    case 'account':
+    case 'hobby':
       return {
         status: 'Success',
         message: AlertMessages.SUCCESS,
@@ -114,6 +119,30 @@ function numberValidateCheck(options: NumberOptions): ReturnType {
       min: min || 0,
       max: max || Infinity,
       precision: precision || 0,
+    },
+  };
+}
+
+// String Type
+function stringValidateCheck(options: StringOptions): ReturnType {
+  const { type, min, max } = options;
+
+  if (min && max) {
+    if (Number(min) >= Number(max)) {
+      return {
+        status: 'Fail',
+        message: AlertMessages.MINIMUM_GREATER_MAXIMUM,
+      };
+    }
+  }
+
+  return {
+    status: 'Success',
+    message: AlertMessages.SUCCESS,
+    data: {
+      type,
+      min: min || 1,
+      max: max || 255,
     },
   };
 }

@@ -21,6 +21,7 @@ import type {
   AddressOptions,
   ContactOptions,
   HobbyOptions,
+  StringOptions,
 } from '@/types/columns';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Button } from '@/components/ui/button';
@@ -58,6 +59,8 @@ export default function ColumnOptionSelector(props: Props) {
         return { type: 'pk', valueType: 'uuid' };
       case 'number':
         return { type: 'number' };
+      case 'string':
+        return { type: 'string' };
       case 'date':
         return { type: 'date', valueType: 'date' };
       case 'enum':
@@ -320,6 +323,51 @@ export default function ColumnOptionSelector(props: Props) {
               }
               disabled={props.disabled}
               className={'col-span-2'}
+            />
+          </div>
+        );
+      }
+      case 'string': {
+        const stringOption = options as StringOptions;
+
+        return (
+          <div className={'grid grid-cols-2 gap-2'}>
+            <Input
+              type={'number'}
+              value={stringOption.min}
+              onChange={(e) =>
+                handleSelectedChange(
+                  'min',
+                  inputIntegerValue(e.target.value, {
+                    type: 'between',
+                    min: 1,
+                    max: 255,
+                  }),
+                )
+              }
+              placeholder={
+                ContentMessages.INPUT_MINIMUM_OPTION_VALUE_PLACEHOLDER[language]
+              }
+              disabled={props.disabled}
+            />
+
+            <Input
+              type={'number'}
+              value={stringOption.max}
+              onChange={(e) =>
+                handleSelectedChange(
+                  'max',
+                  inputIntegerValue(e.target.value, {
+                    type: 'between',
+                    min: 1,
+                    max: 255,
+                  }),
+                )
+              }
+              placeholder={
+                ContentMessages.INPUT_MAXIMUM_OPTION_VALUE_PLACEHOLDER[language]
+              }
+              disabled={props.disabled}
             />
           </div>
         );

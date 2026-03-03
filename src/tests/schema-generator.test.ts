@@ -66,7 +66,7 @@ describe('SchemaGenerator', () => {
   });
 
   it('toSQL: INSERT INTO 구문과 데이터가 포함된 SQL을 생성해야 한다', () => {
-    const sql = SchemaGenerator.toSQL('users', mockColumns, 10);
+    const sql = SchemaGenerator.toSQL('users', mockColumns, 10, 'POSTGRESQL');
 
     expect(sql).toContain(
       'INSERT INTO "users" ("id", "age", "email", "address", "address_detail", "phone", "name", "is_active", "created_at")',
@@ -75,6 +75,32 @@ describe('SchemaGenerator', () => {
 
     const values = sql.split('VALUES')[1];
     expect(values.split('\n')).toHaveLength(amount + 1);
+  });
+
+  it('toSQL: INSERT INTO 구문과 데이터가 포함된 SQL을 각 데이터베이스에 맞게 생성해야 한다', () => {
+    const mysqlSQL = SchemaGenerator.toSQL('users', mockColumns, 10, 'MYSQL');
+    const mysqlSplit = `\``;
+    expect(mysqlSQL).toContain(
+      `INSERT INTO ${mysqlSplit}users${mysqlSplit} (${mysqlSplit}id${mysqlSplit}, ${mysqlSplit}age${mysqlSplit}, ${mysqlSplit}email${mysqlSplit}, ${mysqlSplit}address${mysqlSplit}, ${mysqlSplit}address_detail${mysqlSplit}, ${mysqlSplit}phone${mysqlSplit}, ${mysqlSplit}name${mysqlSplit}, ${mysqlSplit}is_active${mysqlSplit}, ${mysqlSplit}created_at${mysqlSplit})`,
+    );
+
+    const postgresql = SchemaGenerator.toSQL(
+      'users',
+      mockColumns,
+      10,
+      'POSTGRESQL',
+    );
+    const postgresqlSplit = `"`;
+    expect(postgresql).toContain(
+      `INSERT INTO ${postgresqlSplit}users${postgresqlSplit} (${postgresqlSplit}id${postgresqlSplit}, ${postgresqlSplit}age${postgresqlSplit}, ${postgresqlSplit}email${postgresqlSplit}, ${postgresqlSplit}address${postgresqlSplit}, ${postgresqlSplit}address_detail${postgresqlSplit}, ${postgresqlSplit}phone${postgresqlSplit}, ${postgresqlSplit}name${postgresqlSplit}, ${postgresqlSplit}is_active${postgresqlSplit}, ${postgresqlSplit}created_at${postgresqlSplit})`,
+    );
+
+    const mssql = SchemaGenerator.toSQL('users', mockColumns, 10, 'MSSQL');
+    const mssqlSplit1 = '[';
+    const mssqlSplit2 = ']';
+    expect(mssql).toContain(
+      `INSERT INTO ${mssqlSplit1}users${mssqlSplit2} (${mssqlSplit1}id${mssqlSplit2}, ${mssqlSplit1}age${mssqlSplit2}, ${mssqlSplit1}email${mssqlSplit2}, ${mssqlSplit1}address${mssqlSplit2}, ${mssqlSplit1}address_detail${mssqlSplit2}, ${mssqlSplit1}phone${mssqlSplit2}, ${mssqlSplit1}name${mssqlSplit2}, ${mssqlSplit1}is_active${mssqlSplit2}, ${mssqlSplit1}created_at${mssqlSplit2})`,
+    );
   });
 
   it('10,000개의 JSON 데이터를 1초 이내에 생성해야 한다', () => {

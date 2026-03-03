@@ -55,6 +55,9 @@ export const RandomUtils = {
       return dayjs(randomDate).format(options.format);
     else return dayjs(randomDate).unix();
   },
+  getRandomString: (min: number, max: number) => {
+    return Math.random().toString(36).substring(min, max);
+  },
   getRandomName: (valueType: NameValueType, language: Language) => {
     if (language === 'ko') {
       if (valueType === 'firstName') {
@@ -75,7 +78,7 @@ export const RandomUtils = {
     }
   },
   getRandomAccount: () => {
-    return Math.random().toString(36).substring(2, 10);
+    return RandomUtils.getRandomString(2, 10);
   },
   getRandomEmail: () => {
     const domains = RandomUtils.pick(EMAIL_DOMAINS);

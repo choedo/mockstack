@@ -12,6 +12,11 @@ export interface NumberOptions {
   precision?: number; // 소수점 자릿수
 }
 
+export interface StringOptions {
+  type: Extract<ColumnDefaultTypes, 'string'>;
+  min?: number;
+  max?: number;
+}
 // 2. 날짜형 (Date) 옵션
 export interface DateOptions {
   type: Extract<ColumnDefaultTypes, 'date'>;
