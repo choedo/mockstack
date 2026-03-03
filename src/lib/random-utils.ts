@@ -74,9 +74,12 @@ export const RandomUtils = {
       }
     }
   },
+  getRandomAccount: () => {
+    return Math.random().toString(36).substring(2, 10);
+  },
   getRandomEmail: () => {
     const domains = RandomUtils.pick(EMAIL_DOMAINS);
-    const randomStr = Math.random().toString(36).substring(2, 10);
+    const randomStr = RandomUtils.getRandomAccount();
     return `${randomStr}@${domains}`;
   },
   getRandomAddress: (valueType: AddressValueType, language: 'ko') => {

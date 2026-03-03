@@ -10,6 +10,8 @@ import type {
   EmailOptions,
   AddressOptions,
   ContactOptions,
+  AccountOptions,
+  HobbyOptions,
 } from '@/types/columns';
 
 export type ProfileEntity = Database['public']['Tables']['profile']['Row'];
@@ -27,7 +29,13 @@ export type TableAndColumn = TableEntity & {
   columns: ColumnEntity[];
 };
 export type ColumnDefaultTypes = 'pk' | 'date' | 'enum' | 'number' | 'boolean';
-export type ColumnCustomTypes = 'name' | 'email' | 'address' | 'contact';
+export type ColumnCustomTypes =
+  | 'name'
+  | 'email'
+  | 'address'
+  | 'contact'
+  | 'account'
+  | 'hobby';
 export type ColumnTypes = ColumnDefaultTypes | ColumnCustomTypes;
 
 export type ColumnDefaultOptions =
@@ -40,5 +48,7 @@ export type ColumnCustomOptions =
   | NameOptions
   | EmailOptions
   | AddressOptions
-  | ContactOptions;
+  | ContactOptions
+  | AccountOptions
+  | HobbyOptions;
 export type ColumnOptions = ColumnDefaultOptions | ColumnCustomOptions;

@@ -88,4 +88,15 @@ export interface ContactOptions {
   valueType: ContactValueType;
   format?: string;
 }
+
+// 5. 계정 (Account) 옵션
+export interface AccountOptions {
+  type: Extract<ColumnCustomTypes, 'account'>;
+}
+
+// 6. 취미 (Hobby) 옵션
+export interface HobbyOptions {
+  type: Extract<ColumnCustomTypes, 'hobby'>;
+  language: Language;
+}
 /**!SECTION */

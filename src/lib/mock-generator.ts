@@ -1,9 +1,11 @@
 import { BOOLEAN_DATA } from '@/data/boolean';
+import { ENGLISH_HOBBY, KOREAN_HOBBY } from '@/data/hobby';
 import { RandomUtils } from '@/lib/random-utils';
 import type {
   NameOptions,
   ContactOptions,
   AddressOptions,
+  HobbyOptions,
 } from '@/types/columns';
 import type { ColumnEntity } from '@/types/data';
 import type { Dayjs } from 'dayjs';
@@ -60,6 +62,14 @@ export const mockGenerateValue: MockGenerateValue = (col, index) => {
       const { valueType, format = '' } = column_values as ContactOptions;
 
       return RandomUtils.getRandomContact(valueType, format);
+    }
+    case 'account': {
+      return RandomUtils.getRandomAccount();
+    }
+    case 'hobby': {
+      const { language } = column_values as HobbyOptions;
+      const hobbies = language === 'ko' ? KOREAN_HOBBY : ENGLISH_HOBBY;
+      return RandomUtils.pick(hobbies);
     }
     default:
       return `${column_name}_${index}`;

@@ -51,6 +51,14 @@ export const CUSTOM_COLUMN_TYPES: CustomKeyValues = {
     title: 'Contact',
     value: 'contact',
   },
+  account: {
+    title: 'Account',
+    value: 'account',
+  },
+  hobby: {
+    title: 'Hobby',
+    value: 'hobby',
+  },
 };
 
 export const COLUMN_TYPES = { ...DEFAULT_COLUMN_TYPES, ...CUSTOM_COLUMN_TYPES };

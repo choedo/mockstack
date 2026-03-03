@@ -20,12 +20,13 @@ import type {
   // EmailOptions,
   AddressOptions,
   ContactOptions,
+  HobbyOptions,
 } from '@/types/columns';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Button } from '@/components/ui/button';
 import { PlusSquare, XIcon } from 'lucide-react';
 import toastMessage from '@/lib/toast-message';
-import { inputIntegerValue } from '@/lib/input-value';
+import { inputIntegerValue, pressEnter } from '@/lib/input-value';
 import { useLanguage } from '@/store/translation';
 import { AlertMessages } from '@/languages/alert-messages';
 import { ContentMessages } from '@/languages/content-messages';
@@ -79,6 +80,12 @@ export default function ColumnOptionSelector(props: Props) {
       }
       case 'contact': {
         return { type: 'contact', format: '', valueType: 'mobile' };
+      }
+      case 'account': {
+        return { type: 'account' };
+      }
+      case 'hobby': {
+        return { type: 'hobby', language: language };
       }
       default:
         return { type: 'pk', valueType: 'uuid' };
@@ -166,17 +173,6 @@ export default function ColumnOptionSelector(props: Props) {
       ...prev,
       values: prevValues.filter((v) => v !== value),
     }));
-  };
-
-  /**
-   * 엔터키로 값 추가
-   * --
-   * @param {KeyboardEvent<HTMLInputElement>} e
-   */
-  const handlePressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter') {
-      handleAddValues();
-    }
   };
 
   /**
@@ -338,7 +334,7 @@ export default function ColumnOptionSelector(props: Props) {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder={ContentMessages.INPUT_VALUE_PLACEHOLDER[language]}
-                onKeyDown={handlePressEnter}
+                onKeyDown={(e) => pressEnter(e, handleAddValues)}
               />
               <Button size={'icon'} onClick={handleAddValues}>
                 <PlusSquare />
@@ -559,12 +555,46 @@ export default function ColumnOptionSelector(props: Props) {
           </div>
         );
       }
+      case 'account': {
+        return <div></div>;
+      }
+      case 'hobby': {
+        const hobbyOption = options as HobbyOptions;
+
+        return (
+          <div className={'grid grid-cols-1 gap-2'}>
+            <Select
+              disabled={props.disabled}
+              value={hobbyOption.language}
+              onValueChange={(value) => handleSelectedChange('language', value)}
+            >
+              <SelectTrigger className={'w-full'}>
+                <SelectValue
+                  placeholder={ContentMessages.LANGUAGES_PLACEHOLDER[language]}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {Object.values(LANGUAGES).map((item) => (
+                    <SelectItem
+                      key={`${item.title}-${item.value}`}
+                      value={item.value}
+                    >
+                      {item.title}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      }
       default:
         return <></>;
     }
   };
 
-  const isEmptyOptions = ['email'];
+  const isEmptyOptions = ['email', 'account'];
   if (isEmptyOptions.includes(selected.type)) return null;
 
   return (
